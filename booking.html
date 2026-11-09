@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Tickets - IPL 2026</title>
+    <!-- Link to your existing CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+    <!-- ================= NAVIGATION BAR ================= -->
+    <header>
+        <nav>
+            <ul>
+                <!-- Link back to the home page -->
+                <li><a href="index.html">Home</a></li>
+                <li><a href="booking.html">Book Ticket</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="booking-form-section" style="max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <h2 style="text-align: center; color: #0a192f;">Book Your IPL Tickets</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">Please fill out all details to secure your seat.</p>
+
+            <!-- The Form -->
+            <form action="#" method="POST">
+                
+                <!-- Name Field -->
+                <div style="margin-bottom: 15px;">
+                    <label for="fullname">Full Name:</label>
+                    <input type="text" id="fullname" name="fullname" 
+                           required minlength="3" maxlength="50" 
+                           placeholder="Enter your full name">
+                </div>
+
+                <!-- Email Field -->
+                <div style="margin-bottom: 15px;">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" 
+                           required placeholder="example@email.com">
+                </div>
+
+                <!-- Phone Number Field -->
+                <div style="margin-bottom: 15px;">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" 
+                           required pattern="[0-9]{10}" 
+                           placeholder="10-digit mobile number">
+                </div>
+
+                <!-- Match Selection -->
+                <div style="margin-bottom: 15px;">
+                    <label for="match">Select Match:</label>
+                    <select id="match" name="match" required>
+                        <option value="">-- Please Choose a Match --</option>
+                        <option value="mi-csk">Mumbai Indians vs Chennai Super Kings</option>
+                        <option value="rcb-kkr">Royal Challengers Bengaluru vs Kolkata Knight Riders</option>
+                        <option value="csk-mi">Chennai Super Kings vs Mumbai Indians</option>
+                    </select>
+                </div>
+
+                <!-- Stand Category -->
+                <div style="margin-bottom: 15px;">
+                    <label for="stand">Stand Category:</label>
+                    <select id="stand" name="stand" required>
+                        <option value="">-- Select Stand --</option>
+                        <option value="general">General (₹1000)</option>
+                        <option value="premium">Premium (₹2500)</option>
+                        <option value="vip">VIP (₹5000)</option>
+                    </select>
+                </div>
+
+                <!-- Number of Tickets (with min and max validation) -->
+                <div style="margin-bottom: 15px;">
+                    <label for="tickets">Number of Tickets:</label>
+                    <input type="number" id="tickets" name="tickets" 
+                           required min="1" max="6" 
+                           placeholder="Max 6 tickets per person">
+                </div>
+
+                <!-- Additional Preferences (Radio/Checkboxes) -->
+                <div style="margin-bottom: 20px;">
+                    <p style="font-weight: bold; margin-bottom: 5px;">Additional Preferences:</p>
+                    
+                    <label style="display: inline-block; margin-right: 15px;">
+                        <input type="checkbox" name="preferences" value="parking"> Need Parking
+                    </label>
+                    <label style="display: inline-block;">
+                        <input type="checkbox" name="preferences" value="food"> Pre-order Food
+                    </label>
+                    <br><br>
+                    <label style="display: inline-block; margin-right: 15px;">
+                        <input type="radio" name="delivery" value="email" required> E-Ticket via Email
+                    </label>
+                    <label style="display: inline-block;">
+                        <input type="radio" name="delivery" value="sms"> SMS Ticket
+                    </label>
+                </div>
+
+                <!-- Submit and Reset Buttons -->
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" style="flex: 1;">Confirm Booking</button>
+                    <button type="reset" style="flex: 1; background-color: #ccc; color: #333;">Reset Form</button>
+                </div>
+
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 IPL Ticket Booking. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
