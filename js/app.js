@@ -1,36 +1,18 @@
 // ==========================================
-// 1. Reusable Toast Notification Function
+// 1. Toast Notification
 // ==========================================
 function showToast(message) {
-    const existingToast = document.querySelector('.toast');
-    if (existingToast) existingToast.remove();
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
 
     const toast = document.createElement('div');
     toast.className = 'toast';
     toast.innerText = message;
-
-    toast.style.position = 'fixed';
-    toast.style.bottom = '20px';
-    toast.style.right = '20px';
-    toast.style.backgroundColor = '#0a192f';
-    toast.style.color = '#d4af37';
-    toast.style.padding = '15px 25px';
-    toast.style.borderRadius = '8px';
-    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
-    toast.style.zIndex = '9999';
-    toast.style.fontWeight = 'bold';
-    toast.style.fontFamily = 'system-ui, sans-serif';
-    toast.style.fontSize = '0.95rem';
-    toast.style.pointerEvents = 'none';
-    toast.style.transition = 'opacity 0.5s ease, transform 0.3s ease';
-    toast.style.transform = 'translateY(20px)';
-    toast.style.opacity = '0';
-
     document.body.appendChild(toast);
 
     requestAnimationFrame(() => {
-        toast.style.transform = 'translateY(0)';
         toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
     });
 
     setTimeout(() => {
@@ -40,29 +22,13 @@ function showToast(message) {
     }, 3000);
 }
 
-// ==========================================
-// 2. Smooth Scrolling for "Book" Buttons
-// ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-    const bookButtons = document.querySelectorAll('#matches table button, .book-btn, button[data-scroll="book"]');
-
-    bookButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-            const bookingSection = document.getElementById('book-ticket')
-                                || document.getElementById('booking-form-section');
-            if (bookingSection) {
-                bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                showToast('📢 Redirecting to Booking Form...');
-            } else {
-                showToast('📢 Please fill out the form below.');
-            }
-        });
-    });
-});
+// Set initial toast styles for the animation
+const toastStyleEl = document.createElement('style');
+toastStyleEl.textContent = `.toast { opacity: 0; transform: translateY(20px); }`;
+document.head.appendChild(toastStyleEl);
 
 // ==========================================
-// 3. Activity 7 — Live Booking Summary
+// 2. Activity 7 — Live Booking Summary
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     const matchSelect = document.getElementById('select-match');
@@ -75,9 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const outQty   = document.getElementById('summary-qty');
     const outTotal = document.getElementById('summary-total');
 
-    if (!matchSelect || !standSelect || !qtyInput || !outMatch || !outStand || !outPrice || !outQty || !outTotal) {
-        return;
-    }
+    if (!matchSelect || !standSelect || !qtyInput || !outMatch || !outStand || !outPrice || !outQty || !outTotal) return;
 
     function getBasePrice() {
         const opt = matchSelect.options[matchSelect.selectedIndex];
@@ -108,10 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSummary() {
         const hasMatch = matchSelect.value !== '';
         const hasStand = standSelect.value !== '';
-
         const matchText = hasMatch ? matchSelect.options[matchSelect.selectedIndex].text.trim() : '—';
         const standText = hasStand ? standSelect.options[standSelect.selectedIndex].text.trim() : '—';
-
         const pricePerTicket = getBasePrice() * getStandMultiplier();
         const qty = getQuantity();
         const total = pricePerTicket * qty;
@@ -126,25 +88,112 @@ document.addEventListener('DOMContentLoaded', () => {
         return { hasMatch, hasStand, total };
     }
 
-    let toastTimer = null;
-    function announceUpdate() {
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => {
+    let timer = null;
+    function announce() {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
             const { hasMatch, hasStand, total } = updateSummary();
-            if (hasMatch && hasStand) {
-                showToast(`✅ Summary updated — Total: ${formatINR(total)}`);
-            }
+            if (hasMatch && hasStand) showToast(`✅ Summary updated — Total: ${formatINR(total)}`);
         }, 400);
     }
 
-    matchSelect.addEventListener('change', announceUpdate);
-    standSelect.addEventListener('change', announceUpdate);
-    qtyInput.addEventListener('input',  announceUpdate);
-    qtyInput.addEventListener('change', announceUpdate);
+    matchSelect.addEventListener('change', announce);
+    standSelect.addEventListener('change', announce);
+    qtyInput.addEventListener('input', announce);
+    qtyInput.addEventListener('change', announce);
     qtyInput.addEventListener('blur', () => {
         qtyInput.value = getQuantity();
         updateSummary();
     });
 
     updateSummary();
+});
+
+// ==========================================
+// 3. Activity 8 — Hamburger Menu (Mobile)
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    if (!hamburger || !navLinks) return;
+
+    hamburger.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('open');
+        hamburger.classList.toggle('active', isOpen);
+        hamburger.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Close menu after clicking a link (mobile)
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+            hamburger.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+        });
+    });
+});
+
+// ==========================================
+// 4. Activity 8 — Team Filter
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const filterSelect = document.getElementById('team-filter');
+    const matchCards   = document.querySelectorAll('.match-card');
+    if (!filterSelect || !matchCards.length) return;
+
+    filterSelect.addEventListener('change', () => {
+        const team = filterSelect.value;
+
+        matchCards.forEach(card => {
+            const teams = card.dataset.teams.split(' ');
+            if (team === 'all' || teams.includes(team)) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+
+        showToast(team === 'all' ? '📋 Showing all matches' : `🔍 Filtered by ${team}`);
+    });
+});
+
+// ==========================================
+// 5. Activity 8 — Grid / List View Toggle
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const gridBtn = document.getElementById('view-grid');
+    const listBtn = document.getElementById('view-list');
+    const matchContainer = document.getElementById('match-cards');
+    if (!gridBtn || !listBtn || !matchContainer) return;
+
+    gridBtn.addEventListener('click', () => {
+        matchContainer.classList.remove('list-view');
+        gridBtn.classList.add('active');
+        listBtn.classList.remove('active');
+        showToast('▦ Grid view');
+    });
+
+    listBtn.addEventListener('click', () => {
+        matchContainer.classList.add('list-view');
+        listBtn.classList.add('active');
+        gridBtn.classList.remove('active');
+        showToast('☰ List view');
+    });
+});
+
+// ==========================================
+// 6. Smooth scroll — Book buttons (Activity 5)
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const bookButtons = document.querySelectorAll('.book-btn, #matches table button');
+    bookButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = document.getElementById('book-ticket');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                showToast('📢 Redirecting to Booking Form...');
+            }
+        });
+    });
 });

@@ -10,8 +10,14 @@
 
     <!-- ================= NAVIGATION BAR ================= -->
     <header>
-        <nav>
-            <ul>
+        <nav class="navbar">
+            <a href="#" class="logo">🏏 IPL 2026</a>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
                 <li><a href="#matches">Matches</a></li>
                 <li><a href="#book-ticket">Book Ticket</a></li>
                 <li><a href="#my-bookings">My Bookings</a></li>
@@ -24,88 +30,91 @@
     <section id="hero">
         <h1>Experience The Stadium Energy Live!</h1>
         <p>Book your IPL 2026 tickets now and be part of the action.</p>
-        <button onclick="document.getElementById('matches').scrollIntoView({behavior:'smooth'});">View Schedule</button>
-        <button onclick="document.getElementById('book-ticket').scrollIntoView({behavior:'smooth'});">Book Ticket</button>
+        <div class="hero-buttons">
+            <button onclick="document.getElementById('matches').scrollIntoView({behavior:'smooth'});">View Schedule</button>
+            <button onclick="document.getElementById('book-ticket').scrollIntoView({behavior:'smooth'});">Book Ticket</button>
+        </div>
     </section>
 
     <!-- ================= ABOUT IPL 2026 ================= -->
     <section id="about">
         <h2>About IPL 2026</h2>
         <p>The Indian Premier League returns for its 2026 season with electrifying matches across India.</p>
-        <h3>Popular Teams</h3>
-        <ul>
-            <li>Mumbai Indians (MI)</li>
-            <li>Chennai Super Kings (CSK)</li>
-            <li>Royal Challengers Bengaluru (RCB)</li>
-            <li>Kolkata Knight Riders (KKR)</li>
-        </ul>
-        <h3>Major Venues</h3>
-        <ul>
-            <li>Wankhede Stadium, Mumbai</li>
-            <li>M. A. Chidambaram Stadium, Chennai</li>
-            <li>M. Chinnaswamy Stadium, Bengaluru</li>
-            <li>Eden Gardens, Kolkata</li>
-        </ul>
+        <div class="about-grid">
+            <div>
+                <h3>Popular Teams</h3>
+                <ul>
+                    <li>Mumbai Indians (MI)</li>
+                    <li>Chennai Super Kings (CSK)</li>
+                    <li>Royal Challengers Bengaluru (RCB)</li>
+                    <li>Kolkata Knight Riders (KKR)</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Major Venues</h3>
+                <ul>
+                    <li>Wankhede Stadium, Mumbai</li>
+                    <li>M. A. Chidambaram Stadium, Chennai</li>
+                    <li>M. Chinnaswamy Stadium, Bengaluru</li>
+                    <li>Eden Gardens, Kolkata</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
-    <!-- ================= MATCH SCHEDULE ================= -->
+    <!-- ================= MATCH SCHEDULE (CARDS) ================= -->
     <section id="matches">
         <h2>Match Schedule</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Match No.</th>
-                    <th>Teams</th>
-                    <th>Date &amp; Time</th>
-                    <th>Venue</th>
-                    <th>General</th>
-                    <th>Premium</th>
-                    <th>VIP</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>MI vs CSK</td>
-                    <td>10 Apr 2026, 7:30 PM</td>
-                    <td>Wankhede, Mumbai</td>
-                    <td>₹1,000</td>
-                    <td>₹2,500</td>
-                    <td>₹5,000</td>
-                    <td><button>Book</button></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>RCB vs KKR</td>
-                    <td>12 Apr 2026, 7:30 PM</td>
-                    <td>Chinnaswamy, Bengaluru</td>
-                    <td>₹1,000</td>
-                    <td>₹2,500</td>
-                    <td>₹5,000</td>
-                    <td><button>Book</button></td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>CSK vs MI</td>
-                    <td>15 Apr 2026, 7:30 PM</td>
-                    <td>Chepauk, Chennai</td>
-                    <td>₹1,000</td>
-                    <td>₹2,500</td>
-                    <td>₹5,000</td>
-                    <td><button>Book</button></td>
-                </tr>
-            </tbody>
-        </table>
+
+        <!-- Filter + View toggle -->
+        <div class="schedule-controls">
+            <label for="team-filter">Filter by Team:</label>
+            <select id="team-filter">
+                <option value="all">All Teams</option>
+                <option value="MI">Mumbai Indians</option>
+                <option value="CSK">Chennai Super Kings</option>
+                <option value="RCB">Royal Challengers Bengaluru</option>
+                <option value="KKR">Kolkata Knight Riders</option>
+            </select>
+
+            <div class="view-toggle">
+                <button id="view-grid" class="active" aria-label="Grid view">▦ Grid</button>
+                <button id="view-list" aria-label="List view">☰ List</button>
+            </div>
+        </div>
+
+        <!-- Match cards container -->
+        <div id="match-cards" class="match-grid">
+            <article class="match-card" data-teams="MI CSK">
+                <h3>MI vs CSK</h3>
+                <p><strong>Date:</strong> 10 Apr 2026, 7:30 PM</p>
+                <p><strong>Venue:</strong> Wankhede, Mumbai</p>
+                <p><strong>General:</strong> ₹1,000 · <strong>Premium:</strong> ₹2,500 · <strong>VIP:</strong> ₹5,000</p>
+                <button class="book-btn">Book</button>
+            </article>
+            <article class="match-card" data-teams="RCB KKR">
+                <h3>RCB vs KKR</h3>
+                <p><strong>Date:</strong> 12 Apr 2026, 7:30 PM</p>
+                <p><strong>Venue:</strong> Chinnaswamy, Bengaluru</p>
+                <p><strong>General:</strong> ₹1,000 · <strong>Premium:</strong> ₹2,500 · <strong>VIP:</strong> ₹5,000</p>
+                <button class="book-btn">Book</button>
+            </article>
+            <article class="match-card" data-teams="CSK MI">
+                <h3>CSK vs MI</h3>
+                <p><strong>Date:</strong> 15 Apr 2026, 7:30 PM</p>
+                <p><strong>Venue:</strong> Chepauk, Chennai</p>
+                <p><strong>General:</strong> ₹1,000 · <strong>Premium:</strong> ₹2,500 · <strong>VIP:</strong> ₹5,000</p>
+                <button class="book-btn">Book</button>
+            </article>
+        </div>
     </section>
 
     <!-- ================= TICKET BOOKING FORM & SUMMARY ================= -->
     <section id="book-ticket">
         <h2>Book Your Tickets</h2>
 
-        <div style="display: flex; gap: 50px; flex-wrap: wrap;">
+        <div class="booking-layout">
 
-            <!-- Form -->
             <form action="#" method="POST" id="bookingForm">
                 <fieldset>
                     <legend>Booking Details</legend>
@@ -154,7 +163,6 @@
                 </fieldset>
             </form>
 
-            <!-- Booking Summary Card (LIVE) -->
             <aside>
                 <h3>Booking Summary</h3>
                 <div id="summaryCard">
@@ -195,21 +203,23 @@
         </table>
     </section>
 
-    <!-- ================= GUIDELINES ================= -->
+    <!-- ================= GUIDELINES (3-COL GRID) ================= -->
     <section id="guidelines">
         <h2>Guidelines</h2>
-        <article>
-            <h3>Ticket Verification</h3>
-            <p>Carry a valid photo ID along with your e-ticket. Entry will be denied without verification.</p>
-        </article>
-        <article>
-            <h3>ID Proof Requirement</h3>
-            <p>Aadhaar, PAN, or any government-issued ID is mandatory for entry into the stadium.</p>
-        </article>
-        <article>
-            <h3>Prohibited Items</h3>
-            <p>Outside food, beverages, weapons, and fireworks are strictly prohibited inside the venue.</p>
-        </article>
+        <div class="guidelines-grid">
+            <article>
+                <h3>Ticket Verification</h3>
+                <p>Carry a valid photo ID along with your e-ticket. Entry will be denied without verification.</p>
+            </article>
+            <article>
+                <h3>ID Proof Requirement</h3>
+                <p>Aadhaar, PAN, or any government-issued ID is mandatory for entry into the stadium.</p>
+            </article>
+            <article>
+                <h3>Prohibited Items</h3>
+                <p>Outside food, beverages, weapons, and fireworks are strictly prohibited inside the venue.</p>
+            </article>
+        </div>
     </section>
 
     <!-- ================= FOOTER ================= -->
@@ -217,7 +227,6 @@
         <p>&copy; 2026 IPL Ticket Booking. All rights reserved.</p>
     </footer>
 
-    <!-- Link to JavaScript (inside js/ folder) -->
     <script src="js/app.js"></script>
 </body>
 </html>
